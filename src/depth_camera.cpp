@@ -9,7 +9,6 @@
 #pragma GCC diagnostic ignored "-Wall"
 #pragma GCC diagnostic ignored "-Wextra"
 #pragma GCC diagnostic ignored "-Weffc++"
-#include <PS1080.h>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/imgcodecs.hpp>
 #include <opencv/cv.hpp>
@@ -60,6 +59,7 @@ CameraParameters PseudoCamera::get_parameters() const
     return cam_params;
 }
 
+#ifdef HAVE_OPENNI2
 // ### Asus Xtion PRO LIVE
 XtionCamera::XtionCamera() :
         device{}, depthStream{}, colorStream{}, depthFrame{},
@@ -181,7 +181,9 @@ CameraParameters XtionCamera::get_parameters() const
 {
     return cam_params;
 }
+#endif // HAVE_OPENNI2
 
+#ifdef HAVE_REALSENSE2
 // ### Intel RealSense
 RealSenseCamera::RealSenseCamera() : pipeline{}
 {
@@ -289,8 +291,7 @@ CameraParameters RealSenseCamera::get_parameters() const
 {
     return cam_params;
 }
-
-
+#endif // HAVE_REALSENSE2
 
 // ### Kinect ###
 /*

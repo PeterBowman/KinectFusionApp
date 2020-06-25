@@ -24,23 +24,37 @@ find_package(OpenCV 3.0 REQUIRED COMPONENTS opencv_core
 find_package(Eigen3 REQUIRED)
 
 find_package(OpenNI2)
-if (OPENNI2_FOUND)
+if(OPENNI2_FOUND)
     include_directories("${OPENNI2_INCLUDE_DIRS}")
-endif (OPENNI2_FOUND)
+    set(HAVE_OPENNI2 TRUE)
+endif()
 
-find_package(realsense2 REQUIRED)
+find_package(realsense2)
+if(realsense2_FOUND)
+    set(HAVE_REALSENSE2 TRUE)
+endif()
 # ------------------------------------------------
+
+configure_file(${CMAKE_SOURCE_DIR}/cmake/templates/depth_camera_config.h.in
+               ${CMAKE_BINARY_DIR}/generated_headers/depth_camera_config.h)
 
 file(GLOB KinectFusionApp_SRCS ${CMAKE_SOURCE_DIR}/src/*.cpp)
 add_executable(KinectFusionApp ${KinectFusionApp_SRCS})
 
-target_include_directories(KinectFusionApp PRIVATE ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(KinectFusionApp PRIVATE ${CMAKE_SOURCE_DIR}/include
+                                                   ${CMAKE_BINARY_DIR}/generated_headers)
 
 target_link_libraries(KinectFusionApp opencv_core
                                       opencv_highgui
                                       opencv_imgcodecs
                                       opencv_imgproc
                                       Eigen3::Eigen
-                                      ${OPENNI2_LIBRARY}
-                                      realsense2::realsense2
                                       KinectFusion)
+
+if(OPENNI2_FOUND)
+    target_link_libraries(KinectFusionApp ${OPENNI2_LIBRARIES})
+endif()
+
+if(realsense2_FOUND)
+    target_link_libraries(KinectFusionApp realsense2::realsense2)
+endif()

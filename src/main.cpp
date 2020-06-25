@@ -57,9 +57,14 @@ auto make_camera(const std::shared_ptr<cpptoml::table>& toml_config)
         std::stringstream source_path {};
         source_path << data_path << "source/" << recording_name << "/";
         camera = std::make_unique<PseudoCamera>(source_path.str());
-    } else if (camera_type == "Xtion") {
+    }
+#ifdef HAVE_OPENNI2
+    else if (camera_type == "Xtion") {
         camera = std::make_unique<XtionCamera>();
-    } else if (camera_type == "RealSense") {
+    }
+#endif // HAVE_OPENNI2
+#ifdef HAVE_REALSENSE2
+    else if (camera_type == "RealSense") {
         if(*toml_config->get_qualified_as<bool>("camera.realsense.live")) {
             camera = std::make_unique<RealSenseCamera>();
         } else {
@@ -67,7 +72,9 @@ auto make_camera(const std::shared_ptr<cpptoml::table>& toml_config)
             source_file << data_path << "source/" << recording_name << ".bag";
             camera = std::make_unique<RealSenseCamera>(source_file.str());
         }
-    } else {
+    }
+#endif // HAVE_REALSENSE2
+    else {
         throw std::logic_error("There is no implementation for the camera type you specified.");
     }
 

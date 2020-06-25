@@ -6,17 +6,8 @@
  * Author: Christian Diller
  */
 
+#include <depth_camera_config.h>
 #include <data_types.h>
-
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wall"
-#pragma GCC diagnostic ignored "-Wextra"
-#pragma GCC diagnostic ignored "-Weffc++"
-#pragma GCC diagnostic ignored "-Wunused-variable"
-#include <OpenNI.h>
-#pragma GCC diagnostic pop
-
-#include <librealsense2/rs.hpp>
 
 using kinectfusion::CameraParameters;
 
@@ -58,6 +49,7 @@ private:
     mutable size_t current_index;
 };
 
+#ifdef HAVE_OPENNI2
 /*
  * Provides depth frames acquired by a Asus Xtion PRO LIVE camera.
  */
@@ -79,7 +71,9 @@ private:
 
     CameraParameters cam_params;
 };
+#endif // HAVE_OPENNI2
 
+#ifdef HAVE_REALSENSE2
 /*
  * Provides depth frames acquired by an Intel Realsense camera.
  */
@@ -100,6 +94,7 @@ private:
 
     float depth_scale;
 };
+#endif //HAVE_REALSENSE2
 
 
 /*
