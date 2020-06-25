@@ -23,9 +23,9 @@ find_package(OpenCV 3.0 REQUIRED COMPONENTS opencv_core
 
 find_package(Eigen3 REQUIRED)
 
-find_package(openni2)
+find_package(OpenNI2)
 if (OPENNI2_FOUND)
-    include_directories("${OPENNI2_INCLUDE_DIR}")
+    include_directories("${OPENNI2_INCLUDE_DIRS}")
 endif (OPENNI2_FOUND)
 
 find_package(realsense2 REQUIRED)

@@ -29,11 +29,7 @@ find_library(OPENNI2_LIBRARY
         )
 
 set(OPENNI2_INCLUDE_DIRS ${OPENNI2_INCLUDE_DIR})
-if (APPLE)
-    set(OPENNI2_LIBRARIES ${OPENNI2_LIBRARY})
-else ()
-    set(OPENNI2_LIBRARIES ${OPENNI2_LIBRARY})
-endif ()
+set(OPENNI2_LIBRARIES ${OPENNI2_LIBRARY})
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(OpenNI2 DEFAULT_MSG
@@ -41,6 +37,5 @@ find_package_handle_standard_args(OpenNI2 DEFAULT_MSG
 
 mark_as_advanced(OPENNI2_LIBRARY OPENNI2_INCLUDE_DIR)
 if (OPENNI2_FOUND)
-    include_directories(${OPENNI2_INCLUDE_DIRS})
     message(STATUS "OpenNI2 found (include: ${OPENNI2_INCLUDE_DIR}, lib: ${OPENNI2_LIBRARY})")
 endif (OPENNI2_FOUND)
